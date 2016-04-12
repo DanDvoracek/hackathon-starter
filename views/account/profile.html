@@ -1,0 +1,159 @@
+{% extends "./views/layout.html" %}
+
+{% block content %}
+  <div class="page-header">
+    <h3>Profile information</h3>
+  </div>
+  <form class="form-horizontal" action="/account/profile" method="POST">
+    <input type="hidden" name="_csrf" value="{{ _csrf }}">
+    <div class="form-group">
+      <label for="email" class="col-sm-3 control-label">Email</label>
+      <div class="col-sm-7">
+        <input type="email" name="email" id="email" class="form-control" value="{{ user.email }}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="name" class="col-sm-3 control-label">Name</label>
+      <div class="col-sm-7">
+        <input type="text" name="name" id="name" class="form-control" value="{{ user.profile.name }}">
+      </div>
+    </div>
+    <div class="form-group">
+
+      <label for="gender" class="col-sm-3 control-label">Gender</label>
+      <div class="col-sm-4"></div>
+      <div>
+        <label class="radio col-sm-4"></label>
+        <input type="radio" {% if user.profile.gender =='male' %}checked{% endif %} name="gender" value="male" data-toggle="radio">
+        <span>Male</span>
+      </div>
+      <div>
+        <label class="radio col-sm-4"></label>
+        <input type="radio" {% if user.profile.gender =='female' %}checked{% endif %} name="gender" value="female" data-toggle="radio">
+        <span>Female</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location" class="col-sm-3 control-label">Location</label>
+      <div class="col-sm-7">
+        <input type="text" name="location" id="location" class="form-control" value="{{ user.profile.location }}">
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <label for="website" class="col-sm-3 control-label">Website</label>
+      <div class="col-sm-7">
+        <input type="text" name="website" id="website" class="form-control" value="{{ user.profile.website }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="gravatar" class="col-sm-3 control-label">Gravatar</label>
+      <div class="col-sm-4">
+        <img src="{{ user.gravatar() }}" class="profile" width="100" height="100">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-4">
+        <button class="btn btn btn-primary" type="submit">
+          <i class="fa fa-pencil"></i>
+          Update Profile
+        </button>
+      </div>
+    </div>
+
+  </form>
+  <div class="page-header">
+    <h3>Change password</h3>
+  </div>
+  <form action="/account/password" class="form-horizontal" method="POST">
+    <input type="hidden" name="_csrf" value="{{ _csrf }}">
+    <div class="form-group">
+      <label for="password" class="col-sm-3 control-label">New Password</label>
+      <div class="col-sm-7">
+        <input type="password" name="password" id="password" class="form-control">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword" class="col-sm-3 control-label">Confirm Password</label>
+      <div class="col-sm-7">
+        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-4">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-lock"></i>Change Password</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="page-header">
+    <h3>Delete account</h3>
+  </div>
+
+  <form action="/account/delete" class="form-horizontal" method="POST">
+    <div class="form-group">
+      <p class="col-sm-offset-3 col-sm-4">You can delete your account, but keep in mind this action is irreversible.</p>
+      <input type="hidden" name="_csrf" value="{{ _csrf }}">
+      <div class="col-sm-offset-3 col-sm-4">
+        <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i>Delete my account</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="page-header">
+    <h3>Linked Accounts</h3>
+  </div>
+  <div class="form-horizontal">
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-4">
+        {% if user.instagram %}
+        <p><a href="/account/unlink/instagram" class="text-danger">Unlink your Instagram account</a></p>
+        {% else %}
+        <p><a href="/auth/instagram">Link your Instagram account</a></p>
+        {% endif %}
+      </div>
+      <div class="col-sm-offset-3 col-sm-4">
+        {% if user.instagram %}
+        <p><a href="/account/unlink/google" class="text-danger">Unlink your Google account</a></p>
+        {% else %}
+        <p><a href="/auth/google">Link your Google account</a></p>
+        {% endif %}
+      </div>
+      <div class="col-sm-offset-3 col-sm-4">
+        {% if user.facebook %}
+        <p><a href="/account/unlink/facebook" class="text-danger">Unlink your Facebook account</a></p>
+        {% else %}
+        <p><a href="/auth/facebook">Link your Facebook account</a></p>
+        {% endif %}
+      </div>
+      <div class="col-sm-offset-3 col-sm-4">
+        {% if user.twitter %}
+        <p><a href="/account/unlink/twitter" class="text-danger">Unlink your Twitter account</a></p>
+        {% else %}
+        <p><a href="/auth/twitter">Link your Twitter account</a></p>
+        {% endif %}
+      </div>
+      <div class="col-sm-offset-3 col-sm-4">
+        {% if user.github %}
+        <p><a href="/account/unlink/github" class="text-danger">Unlink your Github account</a></p>
+        {% else %}
+        <p><a href="/auth/github">Link your Github account</a></p>
+        {% endif %}
+      </div>
+      <div class="col-sm-offset-3 col-sm-4">
+        {% if user.linkedin %}
+        <p><a href="/account/unlink/linkedin" class="text-danger">Unlink your LinkedIn account</a></p>
+        {% else %}
+        <p><a href="/auth/linkedin">Link your LinkedIn account</a></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
